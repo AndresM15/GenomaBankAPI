@@ -11,7 +11,7 @@ import lombok.AllArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GenomaDTO {
-    private Long id;
+    private String id;
     private String version;
     private String especieId; // FK a Especie, se usará para la entrada de datos
     private String nombreCientificoEspecie; // Campo extra para mostrar info en la salida

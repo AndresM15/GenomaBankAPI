@@ -2,48 +2,27 @@ package com.BackendG1.GenomaBankAPI.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-
 import java.util.List;
+// ... otros imports
 
-/**
- * Representa un Genoma en la base de datos.
- * Cada genoma pertenece a una Especie y contiene múltiples Cromosomas.
- */
 @Entity
-@Table(name = "Genoma")
+@Table(name = "Genoma") // Coincide con el SQL
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Genoma {
 
-    /**
-     * Identificador único del genoma (clave primaria autoincremental).
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Id // Es un ID, pero NO es autogenerado
+    @Column(name = "ID_Genoma", length = 100) // Coincide con el nombre de la columna SQL
+    private String id; // <-- CAMBIADO A STRING
 
-    /**
-     * Versión o ensamblaje del genoma (ej. "GRCh38.p13").
-     */
-    @Column(name = "version", nullable = false)
-    private String version;
+    @Column(name = "Version_Ensamblaje", nullable = false) // Coincide con el SQL
+    private String version; // <-- Nombre de campo corregido
 
-    /**
-     * Relación Muchos-a-Uno con la entidad Especie.
-     * Un genoma pertenece a una sola especie.
-     */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "especie_id", nullable = false)
+    @JoinColumn(name = "Nombre_Cientifico", nullable = false) // Coincide con el SQL
     private Especie especie;
 
-    /**
-     * Relación Uno-a-Muchos con la entidad Cromosoma.
-     * Un genoma puede contener una lista de cromosomas.
-     * mappedBy indica que la entidad Cromosoma es la dueña de la relación.
-     */
     @OneToMany(mappedBy = "genoma", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Cromosoma> cromosomas;
+
+    // Asegúrate de tener constructores vacíos y getters/setters (Lombok @Data lo hace)
 }

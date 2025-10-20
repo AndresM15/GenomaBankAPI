@@ -9,19 +9,20 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 /**
- * Representa la clave primaria compuesta para la entidad Cromosoma.
- * Es necesaria porque la PK en la base de datos está formada por más de una columna.
+ * Representa la clave primaria compuesta (PK) de la tabla Cromosoma.
+ * Combina el ID del Genoma y el Nombre del Cromosoma.
  */
-@Embeddable // Indica que esta clase se puede incrustar en otra entidad.
+@Embeddable // Indica que esta clase se usará como parte de otra entidad
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class CromosomaId implements Serializable {
 
-    @Column(name = "ID_Genoma")
+    // Debe coincidir con el nombre de la columna en el SQL
+    @Column(name = "ID_Genoma", nullable = false, length = 100)
     private String idGenoma;
 
-    @Column(name = "Nombre_Cromosoma")
+    // Debe coincidir con el nombre de la columna en el SQL
+    @Column(name = "Nombre_Cromosoma", nullable = false, length = 100)
     private String nombreCromosoma;
 }
-
