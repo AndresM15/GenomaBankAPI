@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/genes")
 public class GenesController {
@@ -29,6 +31,16 @@ public class GenesController {
         GeneOutDTO dto = this.genesService.consultarGen(id);
 
         return ResponseEntity.ok(dto);
+    }
 
+    @GetMapping
+    public ResponseEntity<List<GeneOutDTO>> listarGenes(
+            @RequestParam(required = false) Long chromosomeId,
+            @RequestParam(required = false) Integer start,
+            @RequestParam(required = false) Integer end,
+            @RequestParam(required = false) String symbol) {
+
+        List<GeneOutDTO> genes = this.genesService.listarGenes(chromosomeId,start,end,symbol);
+        return ResponseEntity.ok(genes);
     }
 }

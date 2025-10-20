@@ -12,6 +12,7 @@ import com.BackendG1.GenomaBankAPI.repositories.GenesRepository;
 import com.BackendG1.GenomaBankAPI.services.GenesService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,8 +76,36 @@ public class GenesServiceImpl implements GenesService {
     }
 
     @Override
-    public List<GeneOutDTO> ListarGenes(String ChromosomeId, Integer startPos, Integer endPos, String symbol) {
-        return List.of();
+    public List<GeneOutDTO> listarGenes(Long chromosomeId, Integer startPos, Integer endPos, String symbol) {
+        List<Genes> genes = new ArrayList<>();
+
+        // Si no hay filtros, devuelve todo
+        if (chromosomeId == null && startPos == null && endPos == null && symbol == null) {
+            genes = genesRepository.findAll();
+        }
+        // Filtro por cromosoma
+        else if (chromosomeId != null) {
+            genes = genesRepository.findByCromosoma_Id(chromosomeId);
+        }
+        // Filtro por símbolo
+        else if (symbol != null) {
+            genes = genesRepository.findBySymbolContainingIgnoreCase(symbol);
+        }
+
+        // Convertir a DTO
+        List<GeneOutDTO> dtoLista = new ArrayList<>();
+        for (Genes gen : genes) {
+            GeneOutDTO dto = new GeneOutDTO();
+            dto.setId(gen.getId());
+            dto.setSymbol(gen.getSymbol());
+            dto.setStartPos(gen.getStartPos());
+            dto.setEndPos(gen.getEndPos());
+            dto.setStrand(gen.getStrand());
+            dto.setSequence(gen.getSequence());
+            dto.setCromosomaId(gen.getCromosoma().getId());
+            dtoLista.add(dto);
+        }
+        return dtoLista;
     }
 
     @Override

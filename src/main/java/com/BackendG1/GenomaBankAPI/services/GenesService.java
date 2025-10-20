@@ -18,7 +18,7 @@ public interface GenesService {
 
     public GeneOutDTO crearGen(GeneInDTO inDTO);
     public GeneOutDTO consultarGen(Long id);
-    public List<GeneOutDTO> ListarGenes(String ChromosomeId, Integer startPos,Integer endPos,String symbol);
+    public List<GeneOutDTO> listarGenes(Long ChromosomeId, Integer startPos,Integer endPos,String symbol);
 
     // -- ENDPOINTS DE TOMAS --
 
