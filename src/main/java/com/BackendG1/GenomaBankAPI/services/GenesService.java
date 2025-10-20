@@ -14,10 +14,12 @@ import java.util.List;
 public interface GenesService {
 
     // -- ENDPOINTS DE JUANCA  --
-
     public GeneOutDTO crearGen(GeneInDTO inDTO);
     public GeneOutDTO consultarGen(Long id);
     public List<GeneOutDTO> listarGenes(Long ChromosomeId, Integer startPos,Integer endPos,String symbol);
+    public String obtenerSecuencia(Long id);
+    public GeneOutDTO actualizarSecuencia(Long id, String nuevaSecuencia);
+
 
     // -- ENDPOINTS DE TOMAS --
 

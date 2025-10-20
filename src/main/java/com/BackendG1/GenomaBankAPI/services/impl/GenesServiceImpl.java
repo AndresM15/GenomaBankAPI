@@ -108,6 +108,37 @@ public class GenesServiceImpl implements GenesService {
         return dtoLista;
     }
 
+    @Override
+    public String obtenerSecuencia(Long id) {
+        Optional<Genes> gen = this.genesRepository.findById(id);
+        if(gen.isEmpty()){
+            throw new NotFoundException("Gen no encontrado con ID:" + id);
+        }
+        return gen.get().getSequence();
+    }
+
+    @Override
+    public GeneOutDTO actualizarSecuencia(Long id, String nuevaSecuencia) {
+        Optional<Genes> genOpt = this.genesRepository.findById(id);
+        if(genOpt.isEmpty()){
+            throw new NotFoundException("Gen no encontrado con ID: "+ id);
+        }
+
+        Genes gen = genOpt.get();
+        gen.setSequence(nuevaSecuencia);
+        Genes actualizado = this.genesRepository.save(gen);
+
+        GeneOutDTO dto = new GeneOutDTO();
+        dto.setId(actualizado.getId());
+        dto.setSymbol(actualizado.getSymbol());
+        dto.setStartPos(actualizado.getStartPos());
+        dto.setEndPos(actualizado.getEndPos());
+        dto.setStrand(actualizado.getStrand());
+        dto.setSequence(actualizado.getSequence());
+        dto.setCromosomaId(actualizado.getCromosoma().getId());
+        return dto;
+    }
+
 
     @Override
     public GeneOutDTO actualizarGen(Long id, UpdateGeneDTO inDTO) {

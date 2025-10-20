@@ -2,12 +2,14 @@ package com.BackendG1.GenomaBankAPI.controllers;
 
 import com.BackendG1.GenomaBankAPI.DTO.GeneInDTO;
 import com.BackendG1.GenomaBankAPI.DTO.GeneOutDTO;
+import com.BackendG1.GenomaBankAPI.DTO.SequenceDTO;
 import com.BackendG1.GenomaBankAPI.DTO.UpdateGeneDTO;
 import com.BackendG1.GenomaBankAPI.services.GenesService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/genes")
@@ -44,10 +46,25 @@ public class GenesController {
         return ResponseEntity.ok(genes);
     }
 
+    @GetMapping("/{id}/sequence")
+    public ResponseEntity<String> obtenerSecuencia(@PathVariable Long id){
+        String secuencia = this.genesService.obtenerSecuencia(id);
+        return ResponseEntity.ok(secuencia);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<GeneOutDTO> actualizarGen(@PathVariable Long id, @RequestBody UpdateGeneDTO inDTO){
         GeneOutDTO dto = this.genesService.actualizarGen(id,inDTO);
 
+        return ResponseEntity.ok(dto);
+    }
+
+    @PutMapping("/{id}/sequence")
+    public ResponseEntity<GeneOutDTO> actualizarSecuencia(
+            @PathVariable Long id,
+            @RequestBody SequenceDTO body){
+
+        GeneOutDTO dto = this.genesService.actualizarSecuencia(id,body.getSequence());
         return ResponseEntity.ok(dto);
     }
 }
