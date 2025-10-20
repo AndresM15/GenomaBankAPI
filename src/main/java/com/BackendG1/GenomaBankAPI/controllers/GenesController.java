@@ -9,18 +9,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/genes")
 public class GenesController {
     private final GenesService genesService;
 
-
     public GenesController(GenesService genesService) {
         this.genesService = genesService;
     }
 
+    //@PreAuthorize("hasRole('ADMIN'))
     @PostMapping
     public ResponseEntity<GeneOutDTO> crearGen(@RequestBody GeneInDTO inDTO){
         GeneOutDTO dto = this.genesService.crearGen(inDTO);
@@ -28,6 +27,7 @@ public class GenesController {
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
+    //@PreAuthorize("hasRole('USER'))
     @GetMapping("/{id}")
     public ResponseEntity<GeneOutDTO> consultarGen(@PathVariable Long id){
         GeneOutDTO dto = this.genesService.consultarGen(id);
@@ -35,6 +35,7 @@ public class GenesController {
         return ResponseEntity.ok(dto);
     }
 
+    //@PreAuthorize("hasRole('USER'))
     @GetMapping
     public ResponseEntity<List<GeneOutDTO>> listarGenes(
             @RequestParam(required = false) Long chromosomeId,
@@ -46,12 +47,14 @@ public class GenesController {
         return ResponseEntity.ok(genes);
     }
 
+    //@PreAuthorize("hasRole('USER'))
     @GetMapping("/{id}/sequence")
     public ResponseEntity<String> obtenerSecuencia(@PathVariable Long id){
         String secuencia = this.genesService.obtenerSecuencia(id);
         return ResponseEntity.ok(secuencia);
     }
 
+    //@PreAuthorize("hasRole('ADMIN'))
     @PutMapping("/{id}")
     public ResponseEntity<GeneOutDTO> actualizarGen(@PathVariable Long id, @RequestBody UpdateGeneDTO inDTO){
         GeneOutDTO dto = this.genesService.actualizarGen(id,inDTO);
@@ -59,6 +62,7 @@ public class GenesController {
         return ResponseEntity.ok(dto);
     }
 
+    //@PreAuthorize("hasRole('ADMIN'))
     @PutMapping("/{id}/sequence")
     public ResponseEntity<GeneOutDTO> actualizarSecuencia(
             @PathVariable Long id,
@@ -68,6 +72,7 @@ public class GenesController {
         return ResponseEntity.ok(dto);
     }
 
+    //@PreAuthorize("hasRole('ADMIN'))
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarGen(@PathVariable Long id){
         this.genesService.eliminarGen(id);
