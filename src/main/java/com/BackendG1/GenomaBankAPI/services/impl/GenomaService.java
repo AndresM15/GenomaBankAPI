@@ -70,12 +70,16 @@ public class GenomaServiceImpl implements IGenomaService {
         // Buscar el genoma existente por su ID
         return genomaRepository.findById(id)
                 .map(genomaExistente -> {
-                    // Actualizar los campos del genoma existente
-                    genomaExistente.setVersionEnsamblaje(genomaDTO.getVersionEnsamblaje());
 
-                    // Buscar la nueva especie y actualizar la relación
-                    Especie especie = especieRepository.findById(genomaDTO.getNombreCientificoEspecie())
-                            .orElseThrow(() -> new EntityNotFoundException("Especie no encontrada con el ID: " + genomaDTO.getNombreCientificoEspecie()));
+                    // <-- CAMBIO: Tu DTO y Entidad usan "version"
+                    genomaExistente.setVersion(genomaDTO.getVersion());
+
+                    // <-- CAMBIO: Tu DTO usa "especieId" (un String) para la entrada.
+                    // No puedes usar findById (que espera un Long).
+                    // Debes usar el método que creamos en el paso 1.
+                    Especie especie = especieRepository.findByNombreCientifico(genomaDTO.getEspecieId())
+                            .orElseThrow(() -> new EntityNotFoundException("Especie no encontrada con el nombre: " + genomaDTO.getEspecieId()));
+
                     genomaExistente.setEspecie(especie);
 
                     // Guardar los cambios
@@ -88,6 +92,8 @@ public class GenomaServiceImpl implements IGenomaService {
     @Override
     @Transactional
     public boolean eliminar(Long id) {
+        // Esto estaba bien, pero fallaba porque tu GenomaRepository usaba <Genoma, String>
+        // Si ya lo corregiste a <Genoma, Long>, esto funcionará.
         if (genomaRepository.existsById(id)) {
             genomaRepository.deleteById(id);
             return true;
@@ -97,29 +103,28 @@ public class GenomaServiceImpl implements IGenomaService {
 
     // --- MÉTODOS PRIVADOS DE CONVERSIÓN (MAPPERS) ---
 
-    /**
-     * Convierte una entidad Genoma a su correspondiente GenomaDTO.
-     */
     private GenomaDTO convertirA_DTO(Genoma genoma) {
+        // <-- CAMBIO: Tu DTO tiene 4 campos.
+        // Y los campos de Genoma son "id" y "version".
         return new GenomaDTO(
-                genoma.getIdGenoma(),
-                genoma.getVersionEnsamblaje(),
-                genoma.getEspecie().getNombreCientifico() // Obtener el ID de la especie de la entidad anidada
+                genoma.getId(),
+                genoma.getVersion(),
+                genoma.getEspecie().getNombreCientifico(), // campo especieId del DTO
+                genoma.getEspecie().getNombreCientifico()  // campo nombreCientificoEspecie del DTO
         );
     }
 
-    /**
-     * Convierte un GenomaDTO a una entidad Genoma.
-     */
     private Genoma convertirA_Entidad(GenomaDTO genomaDTO) {
-        // Buscar la entidad Especie a la que pertenece este genoma. Si no existe, lanza una excepción.
-        Especie especie = especieRepository.findById(genomaDTO.getNombreCientificoEspecie())
-                .orElseThrow(() -> new EntityNotFoundException("Especie no encontrada con el ID: " + genomaDTO.getNombreCientificoEspecie()));
+        // <-- CAMBIO: Usar el método "findByNombreCientifico" con el String "especieId" del DTO
+        Especie especie = especieRepository.findByNombreCientifico(genomaDTO.getEspecieId())
+                .orElseThrow(() -> new EntityNotFoundException("Especie no encontrada con el nombre: " + genomaDTO.getEspecieId()));
 
         Genoma genoma = new Genoma();
-        genoma.setIdGenoma(genomaDTO.getIdGenoma());
-        genoma.setVersionEnsamblaje(genomaDTO.getVersionEnsamblaje());
-        genoma.setEspecie(especie); // Asignar la entidad Especie completa a la relación
+
+        // <-- CAMBIO: Los campos son "id" y "version"
+        genoma.setId(genomaDTO.getId());
+        genoma.setVersion(genomaDTO.getVersion());
+        genoma.setEspecie(especie);
         return genoma;
     }
 }
