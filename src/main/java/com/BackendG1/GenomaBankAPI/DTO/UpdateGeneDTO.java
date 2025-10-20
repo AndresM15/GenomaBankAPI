@@ -9,4 +9,6 @@ public class UpdateGeneDTO {
     private Integer endPos;
     private String strand;
     private String sequence;
+    private Long cromosomaId;
+
 }

@@ -26,4 +26,8 @@ public class Genes {
 
     @Column(name = "secuencia_adn", columnDefinition = "LONGTEXT", nullable = false)
     private String sequence;
+
+    @ManyToOne
+    @JoinColumn(name = "cromosoma_id", nullable = false)
+    private Chromosomes cromosoma;
 }
