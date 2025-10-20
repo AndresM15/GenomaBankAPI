@@ -186,6 +186,10 @@ public class GenesServiceImpl implements GenesService {
 
     @Override
     public void eliminarGen(Long id) {
-
+        Optional<Genes> genOpt = genesRepository.findById(id);
+        if (genOpt.isEmpty()) {
+            throw new NotFoundException("Gen no encontrado con ID: " + id);
+        }
+        this.genesRepository.deleteById(id);
     }
 }

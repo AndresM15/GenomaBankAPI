@@ -67,4 +67,11 @@ public class GenesController {
         GeneOutDTO dto = this.genesService.actualizarSecuencia(id,body.getSequence());
         return ResponseEntity.ok(dto);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminarGen(@PathVariable Long id){
+        this.genesService.eliminarGen(id);
+
+        return ResponseEntity.noContent().build();
+    }
 }
