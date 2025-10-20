@@ -18,5 +18,5 @@ public class CromosomaDTO {
     private String secuenciaADN;
 
     // El ID del genoma al que pertenece, parte de la clave compuesta
-    private String idGenoma;
+    private Long idGenoma;
 }

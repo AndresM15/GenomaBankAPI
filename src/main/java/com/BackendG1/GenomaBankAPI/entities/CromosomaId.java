@@ -20,7 +20,7 @@ public class CromosomaId implements Serializable {
 
     // Debe coincidir con el nombre de la columna en el SQL
     @Column(name = "ID_Genoma", nullable = false, length = 100)
-    private String idGenoma;
+    private Long idGenoma;
 
     // Debe coincidir con el nombre de la columna en el SQL
     @Column(name = "Nombre_Cromosoma", nullable = false, length = 100)

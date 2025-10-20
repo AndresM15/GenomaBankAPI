@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  * Esta anotación @Service es crucial para que Spring la reconozca como un bean.
  */
 @Service
-public class CromosomaServiceImpl implements ICromosomaService {
+class CromosomaServiceImpl implements ICromosomaService {
 
     private final CromosomaRepository cromosomaRepository;
     private final GenomaRepository genomaRepository;
@@ -40,7 +40,7 @@ public class CromosomaServiceImpl implements ICromosomaService {
 
     @Override
     @Transactional(readOnly = true)
-    public CromosomaDTO obtenerPorId(String genomeId, String chromosomeName) {
+    public CromosomaDTO obtenerPorId(Long genomeId, String chromosomeName) {
         // Crea el objeto de la clave compuesta para la búsqueda
         CromosomaId id = new CromosomaId(genomeId, chromosomeName);
         return cromosomaRepository.findById(id)
@@ -61,7 +61,7 @@ public class CromosomaServiceImpl implements ICromosomaService {
 
     @Override
     @Transactional
-    public CromosomaDTO actualizarCromosoma(String genomeId, String chromosomeName, CromosomaDTO cromosomaDTO) {
+    public CromosomaDTO actualizarCromosoma(Long genomeId, String chromosomeName, CromosomaDTO cromosomaDTO) {
         CromosomaId id = new CromosomaId(genomeId, chromosomeName);
         return cromosomaRepository.findById(id)
                 .map(cromosomaExistente -> {
@@ -77,7 +77,7 @@ public class CromosomaServiceImpl implements ICromosomaService {
 
     @Override
     @Transactional
-    public boolean eliminar(String genomeId, String chromosomeName) {
+    public boolean eliminar(Long genomeId, String chromosomeName) {
         CromosomaId id = new CromosomaId(genomeId, chromosomeName);
         if (cromosomaRepository.existsById(id)) {
             cromosomaRepository.deleteById(id);

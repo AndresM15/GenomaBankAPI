@@ -26,7 +26,7 @@ public class CromosomaController {
 
     @GetMapping("/{chromosomeName}")
     public ResponseEntity<CromosomaDTO> consultarCromosomaEspecifico(
-            @PathVariable String genomaId,
+            @PathVariable Long genomaId,
             @PathVariable String chromosomeName) {
         CromosomaDTO cromosoma = cromosomaService.obtenerPorId(genomaId, chromosomeName);
         if (cromosoma != null) {
@@ -37,7 +37,7 @@ public class CromosomaController {
 
     @PostMapping
     public ResponseEntity<CromosomaDTO> crearCromosoma(
-            @PathVariable String genomeId,
+            @PathVariable Long genomeId,
             @RequestBody CromosomaDTO cromosomaDTO) {
         // Aseguramos que el DTO tenga el ID del genoma correcto de la URL
         cromosomaDTO.setIdGenoma(genomeId);
@@ -47,7 +47,7 @@ public class CromosomaController {
 
     @PutMapping("/{chromosomeName}")
     public ResponseEntity<CromosomaDTO> actualizarCromosoma(
-            @PathVariable String genomaId,
+            @PathVariable Long genomaId,
             @PathVariable String chromosomeName,
             @RequestBody CromosomaDTO cromosomaDTO) {
         CromosomaDTO actualizado = cromosomaService.actualizarCromosoma(genomaId, chromosomeName, cromosomaDTO);
@@ -61,7 +61,7 @@ public class CromosomaController {
     // Lo agrego por si lo necesitas. Si no, puedes eliminarlo.
     @DeleteMapping("/{chromosomeName}")
     public ResponseEntity<Void> eliminarCromosoma(
-            @PathVariable String genomaId,
+            @PathVariable Long genomaId,
             @PathVariable String chromosomeName) {
         boolean eliminado = cromosomaService.eliminar(genomaId, chromosomeName);
         if (eliminado) {
