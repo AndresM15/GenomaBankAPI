@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface GenomaRepository extends JpaRepository<Genoma, String> {
+public interface GenomaRepository extends JpaRepository<Genoma, Long> {
     List<Genoma> findByEspecieNombreCientifico(String nombreCientifico);
 }

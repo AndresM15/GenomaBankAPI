@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface IGenomaService {
     List<GenomaDTO> obtenerTodos(String speciesId);
-    GenomaDTO obtenerPorId(String id);
+    GenomaDTO obtenerPorId(Long id);
     GenomaDTO crearGenoma(GenomaDTO genomaDTO);
-    GenomaDTO actualizarGenoma(String id, GenomaDTO genomaDTO);
-    boolean eliminar(String id);
+    GenomaDTO actualizarGenoma(Long id, GenomaDTO genomaDTO);
+    boolean eliminar(Long id);
 }

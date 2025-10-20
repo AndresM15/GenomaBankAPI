@@ -7,6 +7,9 @@ import com.BackendG1.GenomaBankAPI.services.IGenomaService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.BackendG1.GenomaBankAPI.repositories.EspecieRepository;
+import com.BackendG1.GenomaBankAPI.entities.Especie;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,7 +47,7 @@ public class GenomaServiceImpl implements IGenomaService {
 
     @Override
     @Transactional(readOnly = true)
-    public GenomaDTO obtenerPorId(String id) {
+    public GenomaDTO obtenerPorId(Long id) {
         return genomaRepository.findById(id)
                 .map(this::convertirA_DTO) // Si se encuentra, se convierte a DTO
                 .orElse(null); // Si no, se devuelve null
@@ -63,7 +66,7 @@ public class GenomaServiceImpl implements IGenomaService {
 
     @Override
     @Transactional
-    public GenomaDTO actualizarGenoma(String id, GenomaDTO genomaDTO) {
+    public GenomaDTO actualizarGenoma(Long id, GenomaDTO genomaDTO) {
         // Buscar el genoma existente por su ID
         return genomaRepository.findById(id)
                 .map(genomaExistente -> {
@@ -84,7 +87,7 @@ public class GenomaServiceImpl implements IGenomaService {
 
     @Override
     @Transactional
-    public boolean eliminar(String id) {
+    public boolean eliminar(Long id) {
         if (genomaRepository.existsById(id)) {
             genomaRepository.deleteById(id);
             return true;
