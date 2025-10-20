@@ -3,7 +3,6 @@ package com.BackendG1.GenomaBankAPI.services;
 import com.BackendG1.GenomaBankAPI.DTO.GeneInDTO;
 import com.BackendG1.GenomaBankAPI.DTO.GeneOutDTO;
 import com.BackendG1.GenomaBankAPI.DTO.UpdateGeneDTO;
-import com.BackendG1.GenomaBankAPI.entities.Genes;
 
 import java.util.List;
 

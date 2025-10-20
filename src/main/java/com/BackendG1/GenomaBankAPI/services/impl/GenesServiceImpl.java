@@ -108,9 +108,49 @@ public class GenesServiceImpl implements GenesService {
         return dtoLista;
     }
 
+
     @Override
     public GeneOutDTO actualizarGen(Long id, UpdateGeneDTO inDTO) {
-        return null;
+        Optional<Genes> gene = this.genesRepository.findById(id);
+
+        if(gene.isEmpty()){
+            // Lanza el 404
+            throw new NotFoundException("El gen con el ID:" + id + " no existe");
+        }
+        Genes entidad = gene.get();
+
+        // Actualizar solo los campos enviados en el DTO
+        entidad.setSymbol(inDTO.getSymbol());
+        entidad.setStartPos(inDTO.getStartPos());
+        entidad.setEndPos(inDTO.getEndPos());
+        entidad.setStrand(inDTO.getStrand());
+        entidad.setSequence(inDTO.getSequence());
+
+        // Si viene un cromosoma nuevo, actualizarlo también
+        if (inDTO.getCromosomaId() != null) {
+            Optional<Chromosomes> cromosomaOp = chromosomesRepository.findById(inDTO.getCromosomaId());
+
+            if (cromosomaOp.isPresent()) {
+                Chromosomes cromosoma = cromosomaOp.get();
+                entidad.setCromosoma(cromosoma);
+            } else {
+                throw new NotFoundException("Cromosoma no encontrado con ID: " + inDTO.getCromosomaId());
+            }
+        }
+
+        Genes entidadActualizada = genesRepository.save(entidad);
+
+        // Convertimos la entidad a DTO de salida
+        GeneOutDTO dto = new GeneOutDTO();
+        dto.setId(entidadActualizada.getId());
+        dto.setSymbol(entidadActualizada.getSymbol());
+        dto.setStartPos(entidadActualizada.getStartPos());
+        dto.setEndPos(entidadActualizada.getEndPos());
+        dto.setStrand(entidadActualizada.getStrand());
+        dto.setSequence(entidadActualizada.getSequence());
+        dto.setCromosomaId(entidadActualizada.getCromosoma().getId());
+
+        return dto;
     }
 
     @Override

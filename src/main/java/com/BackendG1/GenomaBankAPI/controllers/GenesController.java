@@ -2,11 +2,11 @@ package com.BackendG1.GenomaBankAPI.controllers;
 
 import com.BackendG1.GenomaBankAPI.DTO.GeneInDTO;
 import com.BackendG1.GenomaBankAPI.DTO.GeneOutDTO;
+import com.BackendG1.GenomaBankAPI.DTO.UpdateGeneDTO;
 import com.BackendG1.GenomaBankAPI.services.GenesService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -42,5 +42,12 @@ public class GenesController {
 
         List<GeneOutDTO> genes = this.genesService.listarGenes(chromosomeId,start,end,symbol);
         return ResponseEntity.ok(genes);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<GeneOutDTO> actualizarGen(@PathVariable Long id, @RequestBody UpdateGeneDTO inDTO){
+        GeneOutDTO dto = this.genesService.actualizarGen(id,inDTO);
+
+        return ResponseEntity.ok(dto);
     }
 }
