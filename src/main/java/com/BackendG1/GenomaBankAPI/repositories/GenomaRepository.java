@@ -10,9 +10,16 @@ import java.util.List;
 public interface GenomaRepository extends JpaRepository<Genoma, Long> {
 
     /**
-     * Requisito: Listar genomas filtrados por especie.
-     * @param especieId ID de la especie.
-     * @return Lista de genomas de esa especie.
+     * <<< SOLUCIÓN >>>
+     * Este es el método correcto que busca genomas por el ID de la entidad Especie a la que pertenecen.
+     * Spring Data JPA entiende automáticamente el nombre "findByEspecieId" y crea la consulta
+     * SQL correcta (WHERE especie_id = ?).
+     *
+     * @param especieId El ID de la Especie por la que se desea filtrar.
+     * @return Una lista de entidades Genoma que pertenecen a la especie dada.
      */
     List<Genoma> findByEspecieId(Long especieId);
+
+    // El método findByEspecieNombreCientifico se elimina porque no lo estamos usando
+    // y el requisito del PDF especifica el filtro por ID.
 }

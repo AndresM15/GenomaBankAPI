@@ -1,9 +1,9 @@
 package com.BackendG1.GenomaBankAPI.controllers;
 
-import com.BackendG1.GenomaBankAPI.auth.AuthService;
 import com.BackendG1.GenomaBankAPI.dto.AuthOutDTO;
 import com.BackendG1.GenomaBankAPI.dto.LoginInDTO;
 import com.BackendG1.GenomaBankAPI.dto.RegisterInDTO;
+import com.BackendG1.GenomaBankAPI.services.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
