@@ -5,10 +5,7 @@ import com.BackendG1.GenomaBankAPI.DTO.GeneOutDTO;
 import com.BackendG1.GenomaBankAPI.services.GenesService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/genes")
@@ -25,5 +22,13 @@ public class GenesController {
         GeneOutDTO dto = this.genesService.crearGen(inDTO);
 
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<GeneOutDTO> consultarGen(@PathVariable Long id){
+        GeneOutDTO dto = this.genesService.consultarGen(id);
+
+        return ResponseEntity.ok(dto);
+
     }
 }

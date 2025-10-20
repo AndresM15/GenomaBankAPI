@@ -6,6 +6,7 @@ import com.BackendG1.GenomaBankAPI.DTO.UpdateGeneDTO;
 import com.BackendG1.GenomaBankAPI.entities.Chromosomes;
 import com.BackendG1.GenomaBankAPI.entities.Genes;
 import com.BackendG1.GenomaBankAPI.exceptions.DuplicateResourceException;
+import com.BackendG1.GenomaBankAPI.exceptions.NotFoundException;
 import com.BackendG1.GenomaBankAPI.repositories.ChromosomesRepository;
 import com.BackendG1.GenomaBankAPI.repositories.GenesRepository;
 import com.BackendG1.GenomaBankAPI.services.GenesService;
@@ -55,7 +56,22 @@ public class GenesServiceImpl implements GenesService {
 
     @Override
     public GeneOutDTO consultarGen(Long id) {
-        return null;
+        Optional<Genes> genes = this.genesRepository.findById(id);
+        if(genes.isEmpty()){
+            throw new NotFoundException("El gen consultado: " + id + " no existe");
+        }
+
+        Genes entidad = genes.get();
+        GeneOutDTO dto = new GeneOutDTO();
+
+        dto.setId(entidad.getId());
+        dto.setSymbol(entidad.getSymbol());
+        dto.setStartPos(entidad.getStartPos());
+        dto.setEndPos(entidad.getEndPos());
+        dto.setStrand(entidad.getStrand());
+        dto.setSequence(entidad.getSequence());
+        dto.setCromosomaId(entidad.getCromosoma().getId());
+        return dto;
     }
 
     @Override
