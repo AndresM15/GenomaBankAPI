@@ -5,60 +5,26 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-public class Genes {
-    enum OrientacionGen{
-        MAS("+"),
-        MENOS("-");
+import java.util.List;
 
-        private final String simbolo;
+@Entity
+@Table(name = "Genoma")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class Genoma {
 
-        OrientacionGen(String simbolo){
-            this.simbolo = simbolo;
-        }
+    @Id
+    @Column(name = "ID_Genoma")
+    private String idGenoma;
 
-        public String getSimbolo(){
-            return simbolo;
-        }
-    }
+    @Column(name = "Version_Ensamblaje", nullable = false)
+    private String versionEnsamblaje;
 
-    @Entity
-    @Table(name = "gen")
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Data
-    public static class genes {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "Nombre_Cientifico", nullable = false)
+    private Especie especie;
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        @Column(name = "id")
-        private Integer id;
-
-        @Column(name = "simbolo" , length = 100 , nullable = false)
-        private String simbolo;
-
-        @Column(name = "posicion_final" , nullable = false)
-        private Integer posicion_final;
-
-        @Column (name = "posicion_inicial" , nullable = false)
-        private Integer posicion_inicial;
-
-        @Enumerated(EnumType.STRING)
-        @Column(name = "orientacion" , length = 1 , nullable = false)
-        private OrientacionGen orientacion;
-
-        @Lob
-        @Column(name = "secuencia_adn" , nullable = false)
-        private String secuencia_adn;
-
-
-        @ManyToOne(fetch = FetchType.LAZY)
-        @JoinColumn(
-                name = "cromosoma_Id",
-                nullable = false,
-                foreignKey = @ForeignKey(name = "FK_Gen_Cromosoma")
-
-        )
-        private Cromosoma cromosoma;
-
-    }
+    @OneToMany(mappedBy = "genoma", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Cromosoma> cromosomas;
 }
